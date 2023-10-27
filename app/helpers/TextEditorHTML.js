@@ -108,6 +108,9 @@ export default combinedHtml = (theme) => {
 
             var quill = new Quill("#quill", quillOptions);
 
+            let height = String(document.querySelector("#toolbar").offsetHeight) + "px";
+            document.querySelector("#quill").style.paddingTop = height;
+
             function saveRequest() {
                 var delta = quill.getContents();
                 window.ReactNativeWebView.postMessage(JSON.stringify(delta));
