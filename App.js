@@ -20,7 +20,6 @@ const Stack = createStackNavigator();
 
 export default function App() {
   if (!mmkvStorage.getBoolean("initialConfigDone")) {
-    console.log('ok');
     mmkvStorage.set("theme", "dark");
     mmkvStorage.set("initialConfigDone", true);
   }

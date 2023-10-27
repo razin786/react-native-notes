@@ -1,23 +1,34 @@
-import { useContext, useState } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
+import { useContext, useState, useRef } from "react";
+import { View, TextInput, StyleSheet, KeyboardAvoidingView } from "react-native";
 import colors from "../config/colors";
 import NoteMenuBar from "../components/NoteMenuBar";
-import { useRealm } from "../config/RealmSetup";
 import { ThemeContext } from "../ThemeProvider";
+import { WebView } from "react-native-webview";
+import { useRealm } from "../config/RealmSetup";
+import combinedHtml from "../helpers/TextEditorHTML";
+
 
 export default function Note({ route, navigation }) {
   const theme = useContext(ThemeContext).currentTheme;
+  const webViewRef = useRef();
+  const realm = useRealm();
+
+  const [title, setTitle] = useState(route.params.title || "");
+  const noteid = route.params.noteid;
+  const body = route.params.body;
+  const loadBody = body ? `quill.setContents(${body});` : "";
+
   const styles = StyleSheet.create({
     noteview: {
       flex: 32,
       backgroundColor: colors[theme].primary,
-      paddingLeft: 10,
-      paddingRight: 5,
     },
     title: {
       height: "8%",
       color: colors[theme].textPrimary,
       fontSize: 40,
+      paddingLeft: 10,
+      paddingRight: 5,
     },
     note: {
       flex: 1,
@@ -29,19 +40,29 @@ export default function Note({ route, navigation }) {
       flex: 2,
     },
   });
-  const realm = useRealm();
-  const [text, setText] = useState(route.params.text || "");
-  const [title, setTitle] = useState(route.params.title || "");
-  const noteid = route.params.noteid;
+
+  const handleSavePress = () => {
+    webViewRef.current.injectJavaScript("saveRequest()");
+  };
+
+  const saveNote = (event) => {
+    let body = event.nativeEvent.data;
+    realm.write(() => {
+      realm.create(
+        "RealmNote",
+        { _id: noteid, title: title.trim(), body: body },
+        "modified"
+      );
+    });
+    navigation.goBack();
+  };
 
   return (
     <>
       <View style={styles.notemenubar_container}>
         <NoteMenuBar
-          id={noteid}
           navigation={navigation}
-          text={text}
-          title={title}
+          handleSavePress={handleSavePress}
         />
       </View>
       <View style={styles.noteview}>
@@ -52,14 +73,18 @@ export default function Note({ route, navigation }) {
           placeholder="Title"
           placeholderTextColor={"gray"}
         />
-        <TextInput
-          style={styles.note}
-          onChangeText={setText}
-          placeholder="Note"
-          placeholderTextColor={"gray"}
-          value={text}
-          multiline
-        />
+        <KeyboardAvoidingView
+    behavior="padding"
+    keyboardVerticalOffset={100}
+    enabled
+    style={{ flexGrow: 1 }}>
+          <WebView
+            injectedJavaScript={loadBody}
+            onMessage={saveNote}
+            ref={webViewRef}
+            source={{ html: combinedHtml(theme) }}
+          />
+        </KeyboardAvoidingView>
       </View>
     </>
   );

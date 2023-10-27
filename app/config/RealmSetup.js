@@ -11,7 +11,7 @@ class RealmNote extends Realm.Object {
     properties: {
       _id: { type: "string", indexed: true },
       title: { type: "string", indexed: true },
-      text: { type: "string", indexed: true },
+      body: { type: "string", indexed: true },
     },
     primaryKey: '_id'
   };

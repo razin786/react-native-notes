@@ -1,4 +1,4 @@
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, Text } from "react-native";
 import colors from "../config/colors";
 import NoteBox from "../components/NoteBox";
 import HomeMenuBar from "../components/HomeMenuBar";
@@ -8,6 +8,7 @@ import Realm from "realm";
 import { useRealm, useQuery } from "../config/RealmSetup";
 import { useContext } from "react";
 import { ThemeContext } from "../ThemeProvider";
+
 
 export default function Home({ navigation }) {
   const theme = useContext(ThemeContext).currentTheme;
@@ -77,7 +78,7 @@ export default function Home({ navigation }) {
               noteid={item._id}
               setDeleteSet={setDeleteSet}
               setDeleteMode={setDeleteMode}
-              text={item.text}
+              body={item.body}
               title={item.title}
             />
           )}

@@ -3,11 +3,11 @@ import colors from "../config/colors";
 import IconBtn from "./IconBtn";
 import BackIcon from "../assets/icons/Back.svg";
 import SaveIcon from "../assets/icons/Save.svg";
-import { useRealm, useQuery } from "../config/RealmSetup";
+import { useRealm } from "../config/RealmSetup";
 import { useContext } from "react";
 import { ThemeContext } from "../ThemeProvider";
 
-export default function NoteMenuBar({ id, navigation, text, title }) {
+export default function NoteMenuBar({ navigation, handleSavePress }) {
   const theme = useContext(ThemeContext).currentTheme;
   const styles = StyleSheet.create({
     notemenubar: {
@@ -25,17 +25,6 @@ export default function NoteMenuBar({ id, navigation, text, title }) {
   };
   const handleBackLongPress = () => {
     console.log("Back Long Press");
-  };
-  let res = useQuery("RealmNote");
-  const handleSavePress = () => {
-    realm.write(() => {
-      realm.create(
-        "RealmNote",
-        { _id: id, title: title.trim(), text: text },
-        "modified"
-      );
-    });
-    navigation.goBack();
   };
   const handleSaveLongPress = () => {
     console.log("Save Long Press");

@@ -10,7 +10,7 @@ export default function NoteBox({
   noteid,
   setDeleteMode,
   setDeleteSet,
-  text,
+  body,
   title,
 }) {
   const theme = useContext(ThemeContext).currentTheme;
@@ -39,7 +39,7 @@ export default function NoteBox({
       : navigation.navigate("Note", {
           noteid: noteid,
           title: title,
-          text: text,
+          body: body,
         });
   };
   const handleNoteBoxLongPress = (noteid) => {
@@ -66,7 +66,7 @@ export default function NoteBox({
         style={{ ...styles.text, fontSize: title ? 30 : 20 }}
         numberOfLines={1}
       >
-        {title || text}
+        {title || ""}
       </Text>
     </TouchableOpacity>
   );
