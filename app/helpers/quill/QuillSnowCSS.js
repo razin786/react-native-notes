@@ -975,12 +975,5 @@ export default QuillSnowCSS = (theme) => {
 .editor1 {
   width: 100%;
   padding-top: 60px;
-}
-
-.custom-placeholder {
-  position: absolute;
-  top: 80px;
-  left: 22px;
-  color: #808080;
-  pointer-events: none;
+  z-index: 998;
 }`};

@@ -27,7 +27,6 @@ export default combinedHtml = (theme) => {
                     <option value="small"></option>
                     <option selected></option>
                     <option value="large"></option>
-                    <option value="huge"></option>
                 </select>
             </span>
 
@@ -86,7 +85,6 @@ export default combinedHtml = (theme) => {
             <span class="ql-formats">
                 <button class="ql-list" value="bullet"></button>
                 <button class="ql-list" value="ordered"></button>
-                <button class="ql-code-block"></button>
             </span>
 
             <span class="ql-formats">
@@ -96,7 +94,6 @@ export default combinedHtml = (theme) => {
 
         </div>
         <div class="editor1" id="quill"></div>
-        <div class="custom-placeholder">Note</div>
 
         <script>${QuillJS}</script>
 
@@ -105,19 +102,11 @@ export default combinedHtml = (theme) => {
             modules: {
             toolbar: "#toolbar"
             },
+            placeholder: 'Note',
             theme: "snow"
             };
 
             var quill = new Quill("#quill", quillOptions);
-            var placeholder = document.querySelector('.custom-placeholder');
-
-            quill.on('text-change', function() {
-                if (quill.getText().trim() === '') {
-                placeholder.style.display = 'block';
-                } else {
-                placeholder.style.display = 'none';
-                }
-            });
 
             function saveRequest() {
                 var delta = quill.getContents();
