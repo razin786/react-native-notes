@@ -974,5 +974,4 @@ export default QuillSnowCSS = (theme) => {
 
 .editor1 {
   width: 100%;
-  padding-top: 60px;
 }`};
